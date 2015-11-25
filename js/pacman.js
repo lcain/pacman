@@ -166,6 +166,12 @@ function create() {
     ledge.scale.setTo(5, .5);
     ledge.body.immovable = true;
 
+    //bottom 4th line MIDDLE
+
+    ledge = platforms.create(305, 430, 'ground');
+    ledge.scale.setTo(5.9, .5);
+    ledge.body.immovable = true;
+
     //bottom 4th line RIGHT
 
     ledge = platforms.create(540, 430, 'ground');
@@ -176,6 +182,12 @@ function create() {
 
     ledge = platforms.create(100, 155, 'ground');
     ledge.scale.setTo(5, .5);
+    ledge.body.immovable = true;
+
+    //top 4th line middle
+
+    ledge = platforms.create(305, 155, 'ground');
+    ledge.scale.setTo(5.9, .5);
     ledge.body.immovable = true;
 
     //top 4th line RIGHT
@@ -209,6 +221,53 @@ function create() {
     ledge.body.immovable = true;
 
 
+    //FOURTH RIGHT HAND SIDE LINE
+    
+    ledge = platforms.create(625, 208, 'ground');
+    ledge.scale.setTo(.5, 5.7);
+    ledge.body.immovable = true;
+
+    //FOURTH LEFT HAND SIDE LINE
+    ledge = platforms.create(155, 208, 'ground');
+    ledge.scale.setTo(.5, 5.7);
+    ledge.body.immovable = true;
+
+     //Top 5th line down
+
+    ledge = platforms.create(215, 208, 'ground');
+    ledge.scale.setTo(11.4, .5);
+    ledge.body.immovable = true;
+
+     //Bottom 5th line going up
+
+    ledge = platforms.create(215, 374, 'ground');
+    ledge.scale.setTo(11.4, .5);
+    ledge.body.immovable = true;
+
+    ////FIFTH LEFT HAND SIDE LINE
+    ledge = platforms.create(215, 208, 'ground');
+    ledge.scale.setTo(.5, 5.7);
+    ledge.body.immovable = true;
+
+     //GHOST BOX! LINE
+    
+    ledge = platforms.create(300, 208, 'ground');
+    ledge.scale.setTo(.5, 5.7);
+    ledge.body.immovable = true;
+
+
+     //Top 6th line down
+
+    ledge = platforms.create(356, 264, 'ground');
+    ledge.scale.setTo(7, .5);
+    ledge.body.immovable = true;
+
+     //Bottom 6th line up
+
+    ledge = platforms.create(356, 320, 'ground');
+    ledge.scale.setTo(7, .5);
+    ledge.body.immovable = true;
+
     //  Now let's create two ledges
     // ledge = platforms.create(100, 171, 'ground');
     // ledge.scale.setTo(.1, 5);
@@ -224,36 +283,36 @@ function create() {
 // ************PLAYER**************
 
 
-    // // The player and its settings
-    // player = game.add.sprite(100, game.world.height - 150, 'dude');
-    // player.anchor.setTo(0.5, 0.5);
+    // The player and its settings
+    player = game.add.sprite(0, game.world.height - 292, 'dude');
+    player.anchor.setTo(0.5, 0.5);
 
-    // //  We need to enable physics on the player
-    // game.physics.arcade.enable(player);
+    //  We need to enable physics on the player
+    game.physics.arcade.enable(player);
 
-    // //  Player physics properties. Give the little guy a slight bounce.
-    // // player.body.bounce.y = 0.2;
-    // // player.body.gravity.y = 300;
-    // player.body.collideWorldBounds = true;
+    //  Player physics properties. Give the little guy a slight bounce.
+    // player.body.bounce.y = 0.2;
+    // player.body.gravity.y = 300;
+    player.body.collideWorldBounds = true;
 
-    // //  Our two animations, walking left and right.
-    // player.animations.add('left', [0, 1, 2], 10, true);
-    // player.animations.add('right', [0, 1, 2], 10, true);
-    // player.animations.add('up', [0, 1, 2], 10, true);
-    // player.animations.add('down', [0, 1, 2], 10, true);
+    //  Our two animations, walking left and right.
+    player.animations.add('left', [0, 1, 2], 10, true);
+    player.animations.add('right', [0, 1, 2], 10, true);
+    player.animations.add('up', [0, 1, 2], 10, true);
+    player.animations.add('down', [0, 1, 2], 10, true);
 
 
     //********GHOSTS******
 
-    ghost = game.add.sprite(100, game.world.height - 150, 'blueghost');
-    ghost.anchor.setTo(0.5, 0.5);
-    game.physics.arcade.enable(ghost);
-    ghost.body.collideWorldBounds = true;
+    // ghost = game.add.sprite(300, game.world.height - 250, 'blueghost');
+    // ghost.anchor.setTo(0.5, 0.5);
+    // game.physics.arcade.enable(ghost);
+    // ghost.body.collideWorldBounds = true;
 
-    ghost.animations.add('left', [4, 5], 10, true);
-    ghost.animations.add('right', [6, 7], 10, true);
-    ghost.animations.add('up', [0, 1], 10, true);
-    ghost.animations.add('down', [2, 3], 10, true);
+    // ghost.animations.add('left', [4, 5], 10, true);
+    // ghost.animations.add('right', [6, 7], 10, true);
+    // ghost.animations.add('up', [0, 1], 10, true);
+    // ghost.animations.add('down', [2, 3], 10, true);
 
 
 
@@ -286,111 +345,111 @@ function create() {
 
 function update() {
 
-    // //  Collide the player and the stars with the platforms
-    // game.physics.arcade.collide(player, platforms);
-    // game.physics.arcade.collide(stars, platforms);
+    //  Collide the player and the stars with the platforms
+    game.physics.arcade.collide(player, platforms);
+    game.physics.arcade.collide(stars, platforms);
 
-    // //  Checks to see if the player overlaps with any of the stars, if he does call the collectStar function
-    // game.physics.arcade.overlap(player, stars, collectStar, null, this);
+    //  Checks to see if the player overlaps with any of the stars, if he does call the collectStar function
+    game.physics.arcade.overlap(player, stars, collectStar, null, this);
 
-    // //  Reset the players velocity (movement)
-    // player.body.velocity.x = 0;
-    // player.body.velocity.y = 0;
+    //  Reset the players velocity (movement)
+    player.body.velocity.x = 0;
+    player.body.velocity.y = 0;
 
-    // if (cursors.left.isDown)
-    // {
-    //     //  Move to the left
-    //     player.body.velocity.x = -150;
+    if (cursors.left.isDown)
+    {
+        //  Move to the left
+        player.body.velocity.x = -150;
 
-    //     player.animations.play('left');
-    //     player.angle = 180;
-    // }
-    // else if (cursors.right.isDown)
-    // {
-    //     //  Move to the right
-    //     player.body.velocity.x = 150;
+        player.animations.play('left');
+        player.angle = 180;
+    }
+    else if (cursors.right.isDown)
+    {
+        //  Move to the right
+        player.body.velocity.x = 150;
 
-    //     player.animations.play('right');
-    //     player.angle = 0;
-    // }
-    // else if (cursors.up.isDown)
-    // {
-    //     //  Move up.
-    //     player.body.velocity.y = -150;
+        player.animations.play('right');
+        player.angle = 0;
+    }
+    else if (cursors.up.isDown)
+    {
+        //  Move up.
+        player.body.velocity.y = -150;
 
-    //     player.animations.play('up');
-    //     player.angle = 270;
-    // }
-    // else if (cursors.down.isDown)
-    // {
-    //     //  Move down
-    //     player.body.velocity.y = 150;
+        player.animations.play('up');
+        player.angle = 270;
+    }
+    else if (cursors.down.isDown)
+    {
+        //  Move down
+        player.body.velocity.y = 150;
 
-    //     player.animations.play('down');
-    //     player.angle = 90;
-    // }
-    // else
-    // {
-    //     //  Stand still
-    //     player.animations.stop();
+        player.animations.play('down');
+        player.angle = 90;
+    }
+    else
+    {
+        //  Stand still
+        player.animations.stop();
 
-    //     player.frame = 4;
-    // }
+        player.frame = 4;
+    }
     
 
 
     //**********GHOSTS*******************
 
 
-        game.physics.arcade.collide(ghost, platforms);
-    game.physics.arcade.collide(stars, platforms);
+    //     game.physics.arcade.collide(ghost, platforms);
+    // game.physics.arcade.collide(stars, platforms);
 
-    //  Checks to see if the ghost overlaps with any of the stars, if he does call the collectStar function
-    game.physics.arcade.overlap(ghost, stars, collectStar, null, this);
+    // //  Checks to see if the ghost overlaps with any of the stars, if he does call the collectStar function
+    // game.physics.arcade.overlap(ghost, stars, collectStar, null, this);
 
-    //  Reset the ghosts velocity (movement)
-    ghost.body.velocity.x = 0;
-    ghost.body.velocity.y = 0;
+    // //  Reset the ghosts velocity (movement)
+    // ghost.body.velocity.x = 0;
+    // ghost.body.velocity.y = 0;
 
-    if (cursors.left.isDown)
-    {
-        //  Move to the left
-        ghost.body.velocity.x = -150;
+    // if (cursors.left.isDown)
+    // {
+    //     //  Move to the left
+    //     ghost.body.velocity.x = -150;
 
-        ghost.animations.play('left');
-        ghost.angle = 0;
-    }
-    else if (cursors.right.isDown)
-    {
-        //  Move to the right
-        ghost.body.velocity.x = 150;
+    //     ghost.animations.play('left');
+    //     ghost.angle = 0;
+    // }
+    // else if (cursors.right.isDown)
+    // {
+    //     //  Move to the right
+    //     ghost.body.velocity.x = 150;
 
-        ghost.animations.play('right');
-        ghost.angle = 0;
-    }
-    else if (cursors.up.isDown)
-    {
-        //  Move up.
-        ghost.body.velocity.y = -150;
+    //     ghost.animations.play('right');
+    //     ghost.angle = 0;
+    // }
+    // else if (cursors.up.isDown)
+    // {
+    //     //  Move up.
+    //     ghost.body.velocity.y = -150;
 
-        ghost.animations.play('up');
-        ghost.angle = 0;
-    }
-    else if (cursors.down.isDown)
-    {
-        //  Move down
-        ghost.body.velocity.y = 150;
+    //     ghost.animations.play('up');
+    //     ghost.angle = 0;
+    // }
+    // else if (cursors.down.isDown)
+    // {
+    //     //  Move down
+    //     ghost.body.velocity.y = 150;
 
-        ghost.animations.play('down');
-        ghost.angle = 0;
-    }
-    else
-    {
-        //  Stand still
-        ghost.animations.stop();
+    //     ghost.animations.play('down');
+    //     ghost.angle = 0;
+    // }
+    // else
+    // {
+    //     //  Stand still
+    //     ghost.animations.stop();
 
-        ghost.frame = 4;
-    }
+    //     ghost.frame = 4;
+    // }
 
 
 
