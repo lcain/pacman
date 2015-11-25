@@ -15,6 +15,7 @@ function preload() {
 var player;
 var platforms;
 var cursors;
+var ghost;
 
 var stars;
 // var dots;
@@ -251,10 +252,14 @@ function create() {
     ledge.scale.setTo(.5, 5.7);
     ledge.body.immovable = true;
 
-     //GHOST BOX! LINE
+     //GHOST BOX! TOP LINE
     
     ledge = platforms.create(300, 208, 'ground');
-    ledge.scale.setTo(.5, 5.7);
+    ledge.scale.setTo(.5, 2.2);
+    ledge.body.immovable = true;
+    //GHOST BOX BTTOM LINE
+    ledge = platforms.create(300, 320, 'ground');
+    ledge.scale.setTo(.5, 1.7);
     ledge.body.immovable = true;
 
 
@@ -286,7 +291,7 @@ function create() {
 
 
     // The player and its settings
-    player = game.add.sprite(0, game.world.height - 292, 'dude');
+    player = game.add.sprite(14, game.world.height - 292, 'dude');
     player.anchor.setTo(0.5, 0.5);
 
     //  We need to enable physics on the player
@@ -306,17 +311,19 @@ function create() {
 
     //********GHOSTS******
 
-    // ghost = game.add.sprite(300, game.world.height - 250, 'blueghost');
-    // ghost.anchor.setTo(0.5, 0.5);
-    // game.physics.arcade.enable(ghost);
-    // ghost.body.collideWorldBounds = true;
+    ghost = game.add.sprite(300, 300, 'blueghost');
+    ghost.anchor.setTo(0.5, 0.5);
+    game.physics.arcade.enable(ghost);
+    ghost.body.collideWorldBounds = true;
 
-    // ghost.animations.add('left', [4, 5], 10, true);
-    // ghost.animations.add('right', [6, 7], 10, true);
-    // ghost.animations.add('up', [0, 1], 10, true);
-    // ghost.animations.add('down', [2, 3], 10, true);
+    ghost.animations.add('left', [4, 5], 10, true);
+    ghost.animations.add('right', [6, 7], 10, true);
+    ghost.animations.add('up', [0, 1], 10, true);
+    ghost.animations.add('down', [2, 3], 10, true);
 
 
+
+// ***********************STARS**************************
 
     //  Finally some stars to collect
     stars = game.add.group();
@@ -401,6 +408,12 @@ function create() {
 
 function update() {
 
+    game.physics.arcade.collide(ghost, platforms);
+
+    //  Checks to see if the ghost overlaps with any of the stars, if he does call the collectStar function
+    game.physics.arcade.overlap(ghost, player, killPac, null, this);
+
+
     //  Collide the player and the stars with the platforms
     game.physics.arcade.collide(player, platforms);
     game.physics.arcade.collide(stars, platforms);
@@ -431,6 +444,7 @@ function update() {
         player.position.y = 593;
     }
 
+    //Pac's movement binds
 
     if (cursors.left.isDown)
     {
@@ -476,6 +490,49 @@ function update() {
 
     //**********GHOSTS*******************
 
+//     EnemyRed.prototype.update = function() {
+
+//     if ( this.game.physics.arcade.distanceBetween( this.enemy, this.player ) < 100 && this.order !== 'attack' ) {
+//         this.attack( this.player );
+//     }
+
+//     ...
+    
+//     else if ( this.order === 'attack' )
+//     {
+//         this.game.physics.arcade.velocityFromRotation( this.game.physics.arcade.angleBetween( this.enemy.body, this.player.body ), 100, this.enemy.body.velocity);
+//     }
+
+// }
+
+
+    var ghostmove = function(){
+
+   // Phaser.Math.snapTo
+
+    if (ghost.body.velocity.x <= 0) {
+        
+        ghost.animations.play('right');
+        ghost.body.velocity.x = 150;
+    }
+    else if (ghost.body.velocity.x >= 0){
+        
+        ghost.animations.play('up');
+        ghost.body.velocity.y = -150;
+    }
+    
+    if (ghost.body.velocity.x <= 0){
+
+        ghost.animations.play('down');
+        ghost.body.velocity.y = 150;
+
+    }
+   
+
+
+    };
+
+    ghostmove();
 
     //     game.physics.arcade.collide(ghost, platforms);
     // game.physics.arcade.collide(stars, platforms);
@@ -556,5 +613,11 @@ function collectStar (player, star) {
     score += 10;
     scoreText.text = 'Score: ' + score;
 
+
+}
+
+function killPac (ghost, player) {
+
+    player.kill();
 
 }
