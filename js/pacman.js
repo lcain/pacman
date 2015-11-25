@@ -5,7 +5,8 @@ function preload() {
     game.load.image('sky', 'assets/sky.png');
     game.load.image('ground', 'assets/platformblue.png');
     game.load.image('wall', 'assets/bluesquare.jpg');
-    game.load.image('star', 'assets/star.png');
+    // game.load.image('star', 'assets/star.png');
+    game.load.image('star', 'assets/dot.png');
     game.load.spritesheet('dude', 'assets/pacman.png', 32, 32);
     game.load.spritesheet('blueghost', 'assets/blueghost.png', 32, 32);
 
@@ -16,6 +17,7 @@ var platforms;
 var cursors;
 
 var stars;
+// var dots;
 var score = 0;
 var scoreText;
 
@@ -97,7 +99,7 @@ function create() {
 
     // First
     ledge = platforms.create(63, 48, 'ground');
-    ledge.scale.setTo(4, .5);
+    ledge.scale.setTo(3.8, .5);
     ledge.body.immovable = true;
 
     //Second
@@ -114,15 +116,15 @@ function create() {
 
     //Fourth
 
-    ledge = platforms.create(608, 48, 'ground');
-    ledge.scale.setTo(4, .5);
+    ledge = platforms.create(615, 48, 'ground');
+    ledge.scale.setTo(3.8, .5);
     ledge.body.immovable = true;
 
     //BOTTOM LINES from left
 
     // First
     ledge = platforms.create(63, 536, 'ground');
-    ledge.scale.setTo(4, .5);
+    ledge.scale.setTo(3.8, .5);
     ledge.body.immovable = true;
 
     //Second
@@ -139,8 +141,8 @@ function create() {
 
     //Fourth
 
-    ledge = platforms.create(608, 536, 'ground');
-    ledge.scale.setTo(4, .5);
+    ledge = platforms.create(615, 536, 'ground');
+    ledge.scale.setTo(3.8, .5);
     ledge.body.immovable = true;
 
 
@@ -322,18 +324,72 @@ function create() {
     //  We will enable physics for any star that is created in this group
     stars.enableBody = true;
 
-    //  Here we'll create 12 of them evenly spaced apart
-    // for (var i = 0; i < 12; i++)
-    // {
-    //     //  Create a star inside of the 'stars' group
-    //     var star = stars.create(i * 70, 100, 'star');
+     // Here we'll create 12 of them evenly spaced apart
+    for (var i = 0; i < 21; i++){
+        //  Create a star inside of the 'stars' group
+        var star = stars.create(i * 37 + 30, 30, 'star');
+        stars.create(i * 37 + 30, 565, 'star');
 
-    //     //  Let gravity do its thing
-    //     star.body.gravity.y = 300;
+        //  Let gravity do its thing
+        // star.body.gravity.y = 300;
 
-    //     //  This just gives each star a slightly random bounce value
-    //     star.body.bounce.y = 0.7 + Math.random() * 0.2;
-    // }
+        //  This just gives each star a slightly random bounce value
+        // star.body.bounce.y = 0.7 + Math.random() * 0.2;
+    }
+    
+    for (var i = 0; i < 16; i++){
+        //  Create a star inside of the 'stars' group
+        var star = stars.create(i * 38 + 117, 80, 'star');
+        stars.create(i * 38 + 117, 135, 'star');
+        stars.create(i * 38 + 117, 516, 'star');
+        stars.create(i * 38 + 117, 465, 'star');
+    }
+
+    for (var i = 0; i < 14; i++){
+        //  Create a star inside of the 'stars' group
+        stars.create(i * 38 + 165, 187, 'star');
+        stars.create(i * 38 + 165, 407, 'star');
+    }
+
+    for (var i = 0; i < 6; i++){
+        //  Create a star inside of the 'stars' group
+        var star = stars.create(i * 38 + 370, 240, 'star');
+        stars.create(i * 38 + 370, 297, 'star');
+        stars.create(i * 38 + 370, 353, 'star');
+    }
+
+    for (var i = 0; i < 13; i++){
+        //  Create a star inside of the 'stars' group
+        var star = stars.create(30, i * 38 + 68, 'star');
+        stars.create(770, i * 38 + 68, 'star');
+    }
+
+    for (var i = 0; i < 12; i++){
+        //  Create a star inside of the 'stars' group
+        var star = stars.create(80, i * 39.6 + 80, 'star');
+        stars.create(720, i * 39.6 + 80, 'star');
+    }
+
+    for (var i = 0; i < 7; i++){
+        //  Create a star inside of the 'stars' group
+        var star = stars.create(135, i * 36.75 + 187, 'star');
+    }
+    for (var i = 0; i < 5; i++){
+        //  Create a star inside of the 'stars' group
+        var star = stars.create(193, i * 36.75 + 223, 'star');
+        stars.create(600, i * 36.75 + 223, 'star');
+        stars.create(659, i * 36.75 + 223, 'star');
+    }
+    for (var i = 0; i < 4; i++){
+        //  Create a star inside of the 'stars' group
+        var star = stars.create(335, i * 37.5 + 240, 'star');
+    }
+
+
+
+
+
+
 
     //  The score
     scoreText = game.add.text(816, 16, 'score: 0', { fontSize: '32px', fill: '#FFF' });
