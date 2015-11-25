@@ -295,7 +295,7 @@ function create() {
     //  Player physics properties. Give the little guy a slight bounce.
     // player.body.bounce.y = 0.2;
     // player.body.gravity.y = 300;
-    player.body.collideWorldBounds = true;
+    player.body.collideWorldBounds = false;
 
     //  Our two animations, walking left and right.
     player.animations.add('left', [0, 1, 2], 10, true);
@@ -411,6 +411,26 @@ function update() {
     //  Reset the players velocity (movement)
     player.body.velocity.x = 0;
     player.body.velocity.y = 0;
+
+
+    //Lets player swap sides of the board
+
+    if (player.position.x < 0) {
+        player.position.x = 795;
+    }
+
+    if (player.position.x > 795) {
+        player.position.x = 0;
+    }
+
+    if (player.position.y > 593) {
+        player.position.y = 0;
+    }
+
+    if (player.position.y < 0) {
+        player.position.y = 593;
+    }
+
 
     if (cursors.left.isDown)
     {
