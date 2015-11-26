@@ -9,7 +9,14 @@ function preload() {
     game.load.image('star', 'assets/dot.png');
     game.load.image('gameover', 'assets/gameover.png')
     game.load.spritesheet('dude', 'assets/pacman.png', 32, 32);
+     game.load.spritesheet('dude2', 'assets/pacman2.png', 32, 32);
     game.load.spritesheet('blueghost', 'assets/blueghost.png', 32, 32);
+    game.load.spritesheet('orangeghost', 'assets/orangeghost.png', 32, 32);
+    game.load.spritesheet('pinkghost', 'assets/pinkghost.png', 32, 32);
+    game.load.spritesheet('redghost', 'assets/redghost.png', 32, 32);
+    game.load.spritesheet('purpleghost', 'assets/purpleghost.png', 32, 32);
+    game.load.spritesheet('greenghost', 'assets/greenghost.png', 32, 32);
+
 
 }
 
@@ -17,6 +24,7 @@ var player;
 var platforms;
 var cursors;
 var ghost;
+
 var gameover;
 var gameStarted = false;
 
@@ -231,12 +239,12 @@ function create() {
     //FOURTH RIGHT HAND SIDE LINE
     
     ledge = platforms.create(625, 208, 'ground');
-    ledge.scale.setTo(.5, 5.7);
+    ledge.scale.setTo(.5, 5.6);
     ledge.body.immovable = true;
 
     //FOURTH LEFT HAND SIDE LINE
     ledge = platforms.create(155, 208, 'ground');
-    ledge.scale.setTo(.5, 5.7);
+    ledge.scale.setTo(.5, 5.6);
     ledge.body.immovable = true;
 
      //Top 5th line down
@@ -253,20 +261,20 @@ function create() {
 
     ////FIFTH LEFT HAND SIDE LINE
     ledge = platforms.create(215, 208, 'ground');
-    ledge.scale.setTo(.5, 5.7);
+    ledge.scale.setTo(.5, 5.6);
     ledge.body.immovable = true;
 
-     //GHOST BOX! TOP LINE
+    //  //GHOST BOX! TOP LINE
     
-    ledge = platforms.create(300, 208, 'ground');
-    ledge.scale.setTo(.5, 2.2);
-    ledge.body.immovable = true;
+    // ledge = platforms.create(300, 208, 'ground');
+    // ledge.scale.setTo(.5, 2.2);
+    // ledge.body.immovable = true;
 
     
-    //GHOST BOX BTTOM LINE
-    ledge = platforms.create(300, 320, 'ground');
-    ledge.scale.setTo(.5, 1.7);
-    ledge.body.immovable = true;
+    // //GHOST BOX BTTOM LINE
+    // ledge = platforms.create(300, 320, 'ground');
+    // ledge.scale.setTo(.5, 1.7);
+    // ledge.body.immovable = true;
    
 
      //Top 6th line down
@@ -317,16 +325,26 @@ function create() {
 
     //********GHOSTS******
 
-    ghost = game.add.sprite(300, 300, 'blueghost');
-    ghost.anchor.setTo(0.5, 0.5);
-    game.physics.arcade.enable(ghost);
-    ghost.body.collideWorldBounds = true;
+   // var ghost = game.add.group();
+   // ghost.create(300, 300, 'blueghost')
+
+    var names = ['blueghost', 'orangeghost', 'redghost', 'purpleghost', 'pinkghost', 'greenghost']
+    ghost = [];
+
+    for (var i = 0; i < names.length; i++) {
+        
+    ghost[i] = game.add.sprite(300, 300, names[i]);
+    ghost[i].anchor.setTo(0.5, 0.5);
+    game.physics.arcade.enable(ghost[i]);
+    ghost[i].body.collideWorldBounds = true;
    
 
-    ghost.animations.add('left', [4, 5], 10, true);
-    ghost.animations.add('right', [6, 7], 10, true);
-    ghost.animations.add('up', [0, 1], 10, true);
-    ghost.animations.add('down', [2, 3], 10, true);
+    ghost[i].animations.add('left', [4, 5], 10, true);
+    ghost[i].animations.add('right', [6, 7], 10, true);
+    ghost[i].animations.add('up', [0, 1], 10, true);
+    ghost[i].animations.add('down', [2, 3], 10, true);
+
+    };
 
 
 
@@ -571,76 +589,329 @@ function update() {
     var ghostmove = function(){
         // If it hits on the top
             // Try left, try right, try down
+        for (var i = 0; i < ghost.length; i++) {
+                
+           
 
-        if ( ghost.body.wasTouching.up ) {
+
+        if ( ghost[i].body.wasTouching.up ) {
             var randomNum = Math.random();
 
             if ( randomNum <= 0.3333 ) {
-                ghost.body.velocity.x = 150;
-                ghost.body.velocity.y = 0;
+                ghost[i].body.velocity.x = 150;
+                ghost[i].body.velocity.y = 0;
+                ghost[i].animations.play("right");
             } else if ( randomNum <= 0.6666 ) {
-                ghost.body.velocity.x = -150;
-                ghost.body.velocity.y = 0;
+                ghost[i].body.velocity.x = -150;
+                ghost[i].body.velocity.y = 0;
+                ghost[i].animations.play("left");
             } else {
-                ghost.body.velocity.x = 0;
-                ghost.body.velocity.y = 150;
+                ghost[i].body.velocity.x = 0;
+                ghost[i].body.velocity.y = 150;
+                ghost[i].animations.play("down");
             }
-        } else if ( ghost.body.wasTouching.down ) {
+        } else if ( ghost[i].body.wasTouching.down ) {
             var randomNum = Math.random();
 
             if ( randomNum <= 0.3333 ) {
-                ghost.body.velocity.x = 150;
-                ghost.body.velocity.y = 0;
+                ghost[i].body.velocity.x = 150;
+                ghost[i].body.velocity.y = 0;
+                ghost[i].animations.play("right");
             } else if ( randomNum <= 0.6666 ) {
-                ghost.body.velocity.x = -150;
-                ghost.body.velocity.y = 0;
+                ghost[i].body.velocity.x = -150;
+                ghost[i].body.velocity.y = 0;
+                ghost[i].animations.play("left");
             } else {
-                ghost.body.velocity.x = 0;
-                ghost.body.velocity.y = -150;
+                ghost[i].body.velocity.x = 0;
+                ghost[i].body.velocity.y = -150;
+                ghost[i].animations.play("up");
             }
-        } else if ( ghost.body.wasTouching.left ) {
+        } else if ( ghost[i].body.wasTouching.left ) {
             var randomNum = Math.random();
 
             if ( randomNum <= 0.3333 ) {
-                ghost.body.velocity.x = 150;
-                ghost.body.velocity.y = 0;
+                ghost[i].body.velocity.x = 150;
+                ghost[i].body.velocity.y = 0;
+                ghost[i].animations.play("right");
             } else if ( randomNum <= 0.6666 ) {
-                ghost.body.velocity.x = 0;
-                ghost.body.velocity.y = 150;
+                ghost[i].body.velocity.x = 0;
+                ghost[i].body.velocity.y = 150;
+                ghost[i].animations.play("down");
             } else {
-                ghost.body.velocity.x = 0;
-                ghost.body.velocity.y = -150;
+                ghost[i].body.velocity.x = 0;
+                ghost[i].body.velocity.y = -150;
+                ghost[i].animations.play("up");
             }
-        } else if ( ghost.body.wasTouching.right ) {
+        } else if ( ghost[i].body.wasTouching.right ) {
             var randomNum = Math.random();
 
             if ( randomNum <= 0.3333 ) {
-                ghost.body.velocity.x = -150;
-                ghost.body.velocity.y = 0;
+                ghost[i].body.velocity.x = -150;
+                ghost[i].body.velocity.y = 0;
+                ghost[i].animations.play("left");
             } else if ( randomNum <= 0.6666 ) {
-                ghost.body.velocity.x = 0;
-                ghost.body.velocity.y = 150;
+                ghost[i].body.velocity.x = 0;
+                ghost[i].body.velocity.y = 150;
+                ghost[i].animations.play("down");
             } else {
-                ghost.body.velocity.x = 0;
-                ghost.body.velocity.y = -150;
+                ghost[i].body.velocity.x = 0;
+                ghost[i].body.velocity.y = -150;
+                ghost[i].animations.play("up");
             }
         } else {
-
-            if ( ghost.getBounds().x >= 260 && ghost.getBounds().x <= 270
-                 && ghost.position.y >= 184 && ghost.position.y <= 194 ) {
-                console.log( "Time to try going up" );
+//ALL OF MY "UPS"
+            if ( ghost[i].getBounds().x >= 260 && ghost[i].getBounds().x <= 270
+                 && ghost[i].position.y >= 184 && ghost[i].position.y <= 194 ) {
+                // console.log( "RAWR" );
                 var randomNum = Math.random();
-                if ( randomNum < 0.5 ) {
-                    ghost.body.velocity.x = 0;
-                    ghost.body.velocity.y = -150;
+                if ( randomNum < 0.3 ) {
+                    ghost[i].body.velocity.x = 0;
+                    ghost[i].body.velocity.y = -150;
+                    ghost[i].animations.play("up");
+                }
+            } 
+
+           if ( ghost[i].getBounds().x >= 185 && ghost[i].getBounds().x <= 190
+                 && ghost[i].position.y >= 78 && ghost[i].position.y <= 88 ) {
+                // console.log( "TWHAT" );
+                var randomNum = Math.random();
+                if ( randomNum < 0.3 ) {
+                    ghost[i].body.velocity.x = 0;
+                    ghost[i].body.velocity.y = -150;
+                    ghost[i].animations.play("up");
                 }
             }
 
-            // ghost.body.velocity.y = -150;
+            if ( ghost[i].getBounds().x >= 490 && ghost[i].getBounds().x <= 500
+                 && ghost[i].position.y >= 186 && ghost[i].position.y <= 196 ) {
+                // console.log( "AGAINAGAIN" );
+                var randomNum = Math.random();
+                if ( randomNum < 0.3 ) {
+                    ghost[i].body.velocity.x = 0;
+                    ghost[i].body.velocity.y = -150;
+                    ghost[i].animations.play("up");
+                }
+            }
 
+            if ( ghost[i].getBounds().x >= 565 && ghost[i].getBounds().x <= 575
+                 && ghost[i].position.y >= 78 && ghost[i].position.y <= 88 ) {
+                // console.log( "GOING UP!" );
+                var randomNum = Math.random();
+                if ( randomNum < 0.3 ) {
+                    ghost[i].body.velocity.x = 0;
+                    ghost[i].body.velocity.y = -150;
+                    ghost[i].animations.play("up");
+                }
+            }
 
+            if ( ghost[i].getBounds().x >= 260 && ghost[i].getBounds().x <= 265
+                 && ghost[i].position.y >= 463 && ghost[i].position.y <= 473 ) {
+                // console.log( "Time to try going up!" );
+                var randomNum = Math.random();
+                if ( randomNum < 0.3 ) {
+                    ghost[i].body.velocity.x = 0;
+                    ghost[i].body.velocity.y = -150;
+                    ghost[i].animations.play("up");
+                }
+            }
+
+            if ( ghost[i].getBounds().x >= 495 && ghost[i].getBounds().x <= 500
+                 && ghost[i].position.y >= 463 && ghost[i].position.y <= 473 ) {
+                // console.log( "BEEPBEEP!" );
+                var randomNum = Math.random();
+                if ( randomNum < 0.3 ) {
+                    ghost[i].body.velocity.x = 0;
+                    ghost[i].body.velocity.y = -150;
+                    ghost[i].animations.play("up");
+                }
+            }
+
+            if ( ghost[i].getBounds().x >= 185 && ghost[i].getBounds().x <= 195
+                 && ghost[i].position.y >= 562 && ghost[i].position.y <= 572 ) {
+                // console.log( "IMAJEEP!" );
+                var randomNum = Math.random();
+                if ( randomNum < 0.3 ) {
+                    ghost[i].body.velocity.x = 0;
+                    ghost[i].body.velocity.y = -150;
+                    ghost[i].animations.play("up");
+                }
+            }
+
+            if ( ghost[i].getBounds().x >= 585 && ghost[i].getBounds().x <= 590
+                 && ghost[i].position.y >= 410 && ghost[i].position.y <= 415 ) {
+                // console.log( "VROOM" );
+                var randomNum = Math.random();
+                if ( randomNum < 0.3 ) {
+                    ghost[i].body.velocity.x = 0;
+                    ghost[i].body.velocity.y = -150;
+                    ghost[i].animations.play("up");
+                }
+            }
+
+            if ( ghost[i].getBounds().x >= 575 && ghost[i].getBounds().x <= 580
+                 && ghost[i].position.y >= 562 && ghost[i].position.y <= 572 ) {
+                // console.log( "PINEAPPLES" );
+                var randomNum = Math.random();
+                if ( randomNum < 0.3 ) {
+                    ghost[i].body.velocity.x = 0;
+                    ghost[i].body.velocity.y = -150;
+                    ghost[i].animations.play("up");
+                }
+            }
+
+//ALL THE DOWNS
+
+            if ( ghost[i].getBounds().x >= 190 && ghost[i].getBounds().x <= 200
+                 && ghost[i].position.y >= 26 && ghost[i].position.y <= 36 ) {
+                // console.log( "MAMBA" );
+                var randomNum = Math.random();
+                if ( randomNum < 0.3 ) {
+                    ghost[i].body.velocity.x = 0;
+                    ghost[i].body.velocity.y = 150;
+                    ghost[i].animations.play("down");
+                }
+            }
+
+            if ( ghost[i].getBounds().x >= 570 && ghost[i].getBounds().x <= 575
+                 && ghost[i].position.y >= 26 && ghost[i].position.y <= 36 ) {
+                // console.log( "MAMBANO5" );
+                var randomNum = Math.random();
+                if ( randomNum < 0.3 ) {
+                    ghost[i].body.velocity.x = 0;
+                    ghost[i].body.velocity.y = 150;
+                    ghost[i].animations.play("down");
+                }
+            }
+
+            if ( ghost[i].getBounds().x >= 256 && ghost[i].getBounds().x <= 266
+                 && ghost[i].position.y >= 126 && ghost[i].position.y <= 137 ) {
+                // console.log( "PICKLES" );
+                var randomNum = Math.random();
+                if ( randomNum < 0.3 ) {
+                    ghost[i].body.velocity.x = 0;
+                    ghost[i].body.velocity.y = 150;
+                    ghost[i].animations.play("down");
+                }
+            }
+
+            if ( ghost[i].getBounds().x >= 494 && ghost[i].getBounds().x <= 504
+                 && ghost[i].position.y >= 126 && ghost[i].position.y <= 136 ) {
+                // console.log( "CATS" );
+                var randomNum = Math.random();
+                if ( randomNum < 0.3 ) {
+                    ghost[i].body.velocity.x = 0;
+                    ghost[i].body.velocity.y = 150;
+                    ghost[i].animations.play("down");
+                }
+            }
+
+            if ( ghost[i].getBounds().x >= 259 && ghost[i].getBounds().x <= 269
+                 && ghost[i].position.y >= 400 && ghost[i].position.y <= 410 ) {
+                // console.log( "DOGZ" );
+                var randomNum = Math.random();
+                if ( randomNum < 0.3 ) {
+                    ghost[i].body.velocity.x = 0;
+                    ghost[i].body.velocity.y = 150;
+                    ghost[i].animations.play("down");
+                }
+            }
+
+            if ( ghost[i].getBounds().x >= 495 && ghost[i].getBounds().x <= 500
+                 && ghost[i].position.y >= 400 && ghost[i].position.y <= 410 ) {
+                // console.log( "RAINBOWS" );
+                var randomNum = Math.random();
+                if ( randomNum < 0.3 ) {
+                    ghost[i].body.velocity.x = 0;
+                    ghost[i].body.velocity.y = 150;
+                    ghost[i].animations.play("down");
+                }
+            }
+       
+            if ( ghost[i].getBounds().x >= 186 && ghost[i].getBounds().x <= 196
+                 && ghost[i].position.y >= 510 && ghost[i].position.y <= 520 ) {
+                // console.log( "ELEPHANTS" );
+                var randomNum = Math.random();
+                if ( randomNum < 0.3 ) {
+                    ghost[i].body.velocity.x = 0;
+                    ghost[i].body.velocity.y = 150;
+                    ghost[i].animations.play("down");
+                }
+            }
+
+            if ( ghost[i].getBounds().x >= 575 && ghost[i].getBounds().x <= 580
+                 && ghost[i].position.y >= 510 && ghost[i].position.y <= 520 ) {
+                // console.log( "ROCKETS!" );
+                var randomNum = Math.random();
+                if ( randomNum < 0.2 ) {
+                    ghost[i].body.velocity.x = 0;
+                    ghost[i].body.velocity.y = -150;
+                    ghost[i].animations.play("up");
+                }
+            }
+//TO THE LEFT TO THE LEFT EVERYTHING YOU OWN IN THE BOX TO THE LEFT
+
+          if ( ghost[i].getBounds().x >= 60 && ghost[i].getBounds().x <= 70
+                 && ghost[i].position.y >= 135 && ghost[i].position.y <= 138 ) {
+                // console.log( "HAM" );
+                var randomNum = Math.random();
+                if ( randomNum < 1 ) {
+                    ghost[i].body.velocity.x = -150;
+                    ghost[i].body.velocity.y = 0;
+                    ghost[i].animations.play("left");
+                }
+            }
+
+            if ( ghost[i].getBounds().x >= 55 && ghost[i].getBounds().x <= 65
+                 && ghost[i].position.y >= 300 && ghost[i].position.y <= 302 ) {
+                // console.log( "CHEESE" );
+                var randomNum = Math.random();
+                if ( randomNum < 0.8 ) {
+                    ghost[i].body.velocity.x = -150;
+                    ghost[i].body.velocity.y = 0;
+                    ghost[i].animations.play("left");
+                }
+            }
+
+            if ( ghost[i].getBounds().x >= 55 && ghost[i].getBounds().x <= 65
+                 && ghost[i].position.y >= 465 && ghost[i].position.y <= 470 ) {
+                // console.log( "WATER" );
+                var randomNum = Math.random();
+                if ( randomNum < 1 ) {
+                    ghost[i].body.velocity.x = -150;
+                    ghost[i].body.velocity.y = 0;
+                    ghost[i].animations.play("left");
+                }
+            }
+
+//RIIIIIIGGGHHHTTTTTTTTTTT
+
+            if ( ghost[i].getBounds().x >= 694 && ghost[i].getBounds().x <= 704
+                 && ghost[i].position.y >= 135 && ghost[i].position.y <= 140 ) {
+                // console.log( "BAM" );
+                var randomNum = Math.random();
+                if ( randomNum < 1 ) {
+                    ghost[i].body.velocity.x = 150;
+                    ghost[i].body.velocity.y = 0;
+                    ghost[i].animations.play("right");
+                }
+            }
+
+            if ( ghost[i].getBounds().x >= 694 && ghost[i].getBounds().x <= 704
+                 && ghost[i].position.y >= 460 && ghost[i].position.y <= 463 ) {
+                // console.log( "KEYZ" );
+                var randomNum = Math.random();
+                if ( randomNum < 1 ) {
+                    ghost[i].body.velocity.x = 150;
+                    ghost[i].body.velocity.y = 0;
+                    ghost[i].animations.play("right");
+                }
+            }
+
+            
+        };
 
         }
+
 
 
 
@@ -749,39 +1020,41 @@ function update() {
 // }
 
 //********************RANDOM*********************
+    for (var i = 0; i < ghost.length; i++) {
+        
+    
 
-
-    if (ghost.body.velocity.x === 0 && !gameStarted) {
-        gameStarted = true;
+    if (ghost[i].body.velocity.x === 0 && !gameStarted) {
+       
         var randomNum = parseInt(Math.random() * (2));
         //console.log(randomNum);
 
-        // if (ghost.body.wasTouching.top) {
-        //     ghost.body.position.y += 2;
-        // } else if (ghost.body.wasTouching.right) {
-        //     ghost.body.position.x -= 2;
-        // } else if (ghost.body.wasTouching.down) {
-        //     ghost.body.position.y -= 2;
-        // } else if (ghost.body.wasTouching.left) {
-        //     ghost.body.position.x += 2;
+        // if (ghost[i].body.wasTouching.top) {
+        //     ghost[i].body.position.y += 2;
+        // } else if (ghost[i].body.wasTouching.right) {
+        //     ghost[i].body.position.x -= 2;
+        // } else if (ghost[i].body.wasTouching.down) {
+        //     ghost[i].body.position.y -= 2;
+        // } else if (ghost[i].body.wasTouching.left) {
+        //     ghost[i].body.position.x += 2;
         // }
 
         if (randomNum === 0) {
             randomNum = parseInt(Math.random() * (2));
             if (randomNum === 0 ) {
-                ghost.body.velocity.x = 150;
-                ghost.body.velocity.y = 0;               
-                ghost.animations.play("right");
+                ghost[i].body.velocity.x = 150;
+                ghost[i].body.velocity.y = 0;               
+                ghost[i].animations.play("right");
                 // console.log('h right', randomNum);
-                // console.log('touching', ghost.body.touching.up, ghost.body.touching.right, ghost.body.touching.down, ghost.body.touching.left)
+                // console.log('touching', ghost[i].body.touching.up, ghost[i].body.touching.right, ghost[i].body.touching.down, ghost[i].body.touching.left)
                 return;
 
             } else {
-                ghost.body.velocity.x = -150;
-                ghost.body.velocity.y = 0;              
-                ghost.animations.play("left");
+                ghost[i].body.velocity.x = -150;
+                ghost[i].body.velocity.y = 0;              
+                ghost[i].animations.play("left");
                 // console.log('h left', randomNum);
-                // console.log('touching', ghost.body.touching.up, ghost.body.touching.right, ghost.body.touching.down, ghost.body.touching.left)
+                // console.log('touching', ghost[i].body.touching.up, ghost[i].body.touching.right, ghost[i].body.touching.down, ghost[i].body.touching.left)
                 return;
 
             } 
@@ -790,44 +1063,47 @@ function update() {
         if (randomNum === 1) {
             randomNum = parseInt(Math.random() * (2));
             if (randomNum === 0 ) {
-                ghost.body.velocity.y = 150;
-                ghost.body.velocity.x = 0;               
-                ghost.animations.play("down");
+                ghost[i].body.velocity.y = 150;
+                ghost[i].body.velocity.x = 0;               
+                ghost[i].animations.play("down");
                 // console.log('v down', randomNum);
-                // console.log('touching', ghost.body.touching.up, ghost.body.touching.right, ghost.body.touching.down, ghost.body.touching.left)
+                // console.log('touching', ghost[i].body.touching.up, ghost[i].body.touching.right, ghost[i].body.touching.down, ghost[i].body.touching.left)
                 return;
 
             } else {
-                ghost.body.velocity.y = -150;
-                ghost.body.velocity.x = 0;               
-                ghost.animations.play("up");
+                ghost[i].body.velocity.y = -150;
+                ghost[i].body.velocity.x = 0;               
+                ghost[i].animations.play("up");
                 // console.log('v up', randomNum);
-                // console.log('touching', ghost.body.touching.up, ghost.body.touching.right, ghost.body.touching.down, ghost.body.touching.left)
+                // console.log('touching', ghost[i].body.touching.up, ghost[i].body.touching.right, ghost[i].body.touching.down, ghost[i].body.touching.left)
                 return;
 
             }
         }  
     }
 
+    };
+    gameStarted = true;
+
 
 
 //************************************************************
 
 
-   // if(ghost.body.velocity.x === 0){
-   //      ghost.body.velocity.x = -150;
-   //  } else if (ghost.body.velocity.x >= 0){
-   //      ghost.body.velocity.x = 150
-   //  } else if (ghost.body.velocity.y <= 0){
-   //      ghost.body.velocity.y = -150;
-   //  } else if (ghost.body.velocity.y >= 0){
-   //      ghost.body.velocity.y = 150
+   // if(ghost[i].body.velocity.x === 0){
+   //      ghost[i].body.velocity.x = -150;
+   //  } else if (ghost[i].body.velocity.x >= 0){
+   //      ghost[i].body.velocity.x = 150
+   //  } else if (ghost[i].body.velocity.y <= 0){
+   //      ghost[i].body.velocity.y = -150;
+   //  } else if (ghost[i].body.velocity.y >= 0){
+   //      ghost[i].body.velocity.y = 150
    //   } 
    //   else {
-   //      ghost.body.velocity.x = 150;
+   //      ghost[i].body.velocity.x = 150;
    //  }   
 
-    //     ghost.body.velocity.x || ghost.body.velocity.y = + 150 || - 150;
+    //     ghost[i].body.velocity.x || ghost[i].body.velocity.y = + 150 || - 150;
     // }
 
 
@@ -848,20 +1124,20 @@ function update() {
 
 
 
-    // else if (ghost.body.velocity.x >= 0){
+    // else if (ghost[i].body.velocity.x >= 0){
         
-    //     ghost.animations.play('up');
-    //     ghost.body.velocity.y = -150;
+    //     ghost[i].animations.play('up');
+    //     ghost[i].body.velocity.y = -150;
     // }
     
-    // else if (ghost.body.velocity.y <= 0){
+    // else if (ghost[i].body.velocity.y <= 0){
 
-    //     ghost.animations.play('down');
-    //     ghost.body.velocity.y = 150;
+    //     ghost[i].animations.play('down');
+    //     ghost[i].body.velocity.y = 150;
 
     // }
    
-
+       
 
     };
 
