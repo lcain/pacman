@@ -7,6 +7,7 @@ function preload() {
     game.load.image('wall', 'assets/bluesquare.jpg');
     // game.load.image('star', 'assets/star.png');
     game.load.image('star', 'assets/dot.png');
+    game.load.image('gameover', 'assets/gameover.png')
     game.load.spritesheet('dude', 'assets/pacman.png', 32, 32);
     game.load.spritesheet('blueghost', 'assets/blueghost.png', 32, 32);
 
@@ -16,6 +17,8 @@ var player;
 var platforms;
 var cursors;
 var ghost;
+var gameover;
+var gameStarted = false;
 
 var stars;
 // var dots;
@@ -32,6 +35,7 @@ function create() {
 
     //  The platforms group contains the ground and the 2 ledges we can jump on
     platforms = game.add.group();
+
 
     //  We will enable physics for any object that is created in this group
     platforms.enableBody = true;
@@ -257,11 +261,13 @@ function create() {
     ledge = platforms.create(300, 208, 'ground');
     ledge.scale.setTo(.5, 2.2);
     ledge.body.immovable = true;
+
+    
     //GHOST BOX BTTOM LINE
     ledge = platforms.create(300, 320, 'ground');
     ledge.scale.setTo(.5, 1.7);
     ledge.body.immovable = true;
-
+   
 
      //Top 6th line down
 
@@ -315,6 +321,7 @@ function create() {
     ghost.anchor.setTo(0.5, 0.5);
     game.physics.arcade.enable(ghost);
     ghost.body.collideWorldBounds = true;
+   
 
     ghost.animations.add('left', [4, 5], 10, true);
     ghost.animations.add('right', [6, 7], 10, true);
@@ -406,9 +413,62 @@ function create() {
     
 }
 
+function test () {
+
+    // var directions = [ "right", "left", "down", "up" ];
+    // var randomIndex = Math.round( Math.random() * 3 );
+    // var desiredDirection = directions[ randomIndex ];
+
+    // ghost.body.velocity.x = 0;
+    // ghost.body.velocity.y = 0;
+
+    // var desiredVelocityX = 0;
+    // var desiredVelocityY = 0;
+
+    // if ( desiredDirection === "right" ) {
+    //     desiredVelocityX = 150;
+    // } else if ( desiredDirection === "left" ) {
+    //     desiredVelocityX = -150;
+    // } else if ( desiredDirection === "up" ) {
+    //     desiredVelocityY = -150;
+    // } else if ( desiredDirection === "down" ) {
+    //     desiredVelocityY = 150;
+    // }
+
+
+    // console.log( ghost.body.velocity );
+
+    // console.log( desiredVelocityX, desiredVelocityY );
+
+
+
+
+    // if ( ghost.body.overlapX < 0 ) {
+    //     ghost.body.velocity.x = 150;
+    // }
+
+    // if ( ghost.body.overlapX > 0 ) {
+    //     ghost.body.velocity.x = -150;
+    // }
+
+    // // if ( ghost.body.overlapX === 0 && ghost.body.overlapY === 0 ) {
+    // //     console.log(  )
+    // // }
+
+
+    // console.log( "lnlnaklna" );
+
+
+
+    // debugger;
+
+
+}
+
 function update() {
 
     game.physics.arcade.collide(ghost, platforms);
+    // game.physics.arcade.overlap(ghost, platforms, test, null, this);
 
     //  Checks to see if the ghost overlaps with any of the stars, if he does call the collectStar function
     game.physics.arcade.overlap(ghost, player, killPac, null, this);
@@ -482,6 +542,8 @@ function update() {
     {
         //  Stand still
         player.animations.stop();
+        player.body.velocity.x = 0;
+        player.body.velocity.y = 0;
 
         player.frame = 4;
     }
@@ -507,26 +569,297 @@ function update() {
 
 
     var ghostmove = function(){
+        // If it hits on the top
+            // Try left, try right, try down
 
+        if ( ghost.body.wasTouching.up ) {
+            var randomNum = Math.random();
+
+            if ( randomNum <= 0.3333 ) {
+                ghost.body.velocity.x = 150;
+                ghost.body.velocity.y = 0;
+            } else if ( randomNum <= 0.6666 ) {
+                ghost.body.velocity.x = -150;
+                ghost.body.velocity.y = 0;
+            } else {
+                ghost.body.velocity.x = 0;
+                ghost.body.velocity.y = 150;
+            }
+        } else if ( ghost.body.wasTouching.down ) {
+            var randomNum = Math.random();
+
+            if ( randomNum <= 0.3333 ) {
+                ghost.body.velocity.x = 150;
+                ghost.body.velocity.y = 0;
+            } else if ( randomNum <= 0.6666 ) {
+                ghost.body.velocity.x = -150;
+                ghost.body.velocity.y = 0;
+            } else {
+                ghost.body.velocity.x = 0;
+                ghost.body.velocity.y = -150;
+            }
+        } else if ( ghost.body.wasTouching.left ) {
+            var randomNum = Math.random();
+
+            if ( randomNum <= 0.3333 ) {
+                ghost.body.velocity.x = 150;
+                ghost.body.velocity.y = 0;
+            } else if ( randomNum <= 0.6666 ) {
+                ghost.body.velocity.x = 0;
+                ghost.body.velocity.y = 150;
+            } else {
+                ghost.body.velocity.x = 0;
+                ghost.body.velocity.y = -150;
+            }
+        } else if ( ghost.body.wasTouching.right ) {
+            var randomNum = Math.random();
+
+            if ( randomNum <= 0.3333 ) {
+                ghost.body.velocity.x = -150;
+                ghost.body.velocity.y = 0;
+            } else if ( randomNum <= 0.6666 ) {
+                ghost.body.velocity.x = 0;
+                ghost.body.velocity.y = 150;
+            } else {
+                ghost.body.velocity.x = 0;
+                ghost.body.velocity.y = -150;
+            }
+        } else {
+
+            if ( ghost.getBounds().x >= 260 && ghost.getBounds().x <= 270
+                 && ghost.position.y >= 184 && ghost.position.y <= 194 ) {
+                console.log( "Time to try going up" );
+                var randomNum = Math.random();
+                if ( randomNum < 0.5 ) {
+                    ghost.body.velocity.x = 0;
+                    ghost.body.velocity.y = -150;
+                }
+            }
+
+            // ghost.body.velocity.y = -150;
+
+
+
+        }
+
+
+
+
+
+
+        // if ( ghost.body.wasTouching.left && ghost.body.wasTouching.right ) {
+        //     debugger;
+        // }
+
+        // console.log(  )
+
+        // if ( ghost.body.wasTouching.right ) {
+        //     ghost.body.velocity.x = 0;
+        //     ghost.body.velocity.y = -150;
+        // } else if ( ghost.body.wasTouching.up ) {
+        //     ghost.body.velocity.y = 0;
+        //     ghost.body.velocity.x = 150;
+        // } else if ( ghost.body.wasTouching.left ) {
+        //     ghost.body.velocity.x = 0;
+        //     ghost.body.velocity.y = 150;
+        // } else if ( ghost.body.wasTouching.down ) {
+        //     ghost.body.velocity.y = 150;
+        //     ghost.body.velocity.x = 0;
+        // }
+
+        // console.log( "Ghost Moving" )
+
+        // console.log( ghost.body.checkCollision )
+        // if ( ghost.body.wasTouching.left ) {
+        //     ghost.body.position.x += 1;
+        // } else if ( ghost.body.wasTouching.down ) {
+        //     ghost.body.position.y -= 1;
+        // } else if ( ghost.body.wasTouching.up ) {
+        //     ghost.body.position.y += 1;
+        // } else if ( ghost.body.wasTouching.right ) {
+        //     ghost.body.position.x -= 1;
+        // }
+
+
+
+        // console.log( "Ghost Move" );
    // Phaser.Math.snapTo
 
-    if (ghost.body.velocity.x <= 0) {
+   // ******************UP AND STUCK*****************
+
+    // if (ghost.body.velocity.x <= 0) {
         
-        ghost.animations.play('right');
-        ghost.body.velocity.x = 150;
-    }
-    else if (ghost.body.velocity.x >= 0){
+    //     ghost.animations.play('right');
+    //     ghost.body.velocity.x = 150;
+    // }
+    // else if (ghost.body.velocity.x >= 0){
         
-        ghost.animations.play('up');
-        ghost.body.velocity.y = -150;
+    //     ghost.animations.play('up');
+    //     ghost.body.velocity.y = -150;
+    // }
+
+    //*************************************************
+
+    var directionArray = ["up", "left", "right", "down"];
+    // var moveArray = [moveUp, moveLeft, moveRight, moveDown];
+
+    // var moveRight = (ghost.body.velocity.x = 150);
+    // var moveLeft = (ghost.body.velocity.x = -150);
+    // var moveUp = (ghost.body.velocity.y = -150);
+    // var moveDown = (ghost.body.velocity.y = 150);
+
+    // if (ghost.body.velocity.x === 0) {
+    //     console.log("called");
+    //     var randomNum = parseInt(Math.random() * (1));
+    //     ghost.animations.play(directionArray[randomNum]);
+    //     moveArray[randomNum];
+    // }
+
+//******************SET PATH*******************
+
+// if (ghost.body.velocity.x === 0){
+//     ghost.body.velocity.x = 150;
+//     ghost.body.velocity.y = 0;               
+//     ghost.animations.play("right");
+
+//     // console.log(ghost.body.position.x);
+//     if (ghost.body.position.x === 593) {
+//         ghost.body.velocity.y = 150;
+//         ghost.body.velocity.x = 0;               
+//         ghost.animations.play("down");
+        
+//         console.log(ghost.body.position.y);
+//     } 
+
+//     if (ghost.body.position.y === 398){
+//         ghost.body.velocity.x = -150;
+//         ghost.body.velocity.y = 0;              
+//         ghost.animations.play("left");
+//       console.log(ghost.body.position.y);
+
+//     }
+//        if (ghost.body.position.y === 398){
+//         ghost.body.velocity.x = -150;
+//         ghost.body.velocity.y = 0;              
+//         ghost.animations.play("left");
+//         console.log(ghost.body.position.x);
+
+//         }
+   
+// }
+
+//********************RANDOM*********************
+
+
+    if (ghost.body.velocity.x === 0 && !gameStarted) {
+        gameStarted = true;
+        var randomNum = parseInt(Math.random() * (2));
+        //console.log(randomNum);
+
+        // if (ghost.body.wasTouching.top) {
+        //     ghost.body.position.y += 2;
+        // } else if (ghost.body.wasTouching.right) {
+        //     ghost.body.position.x -= 2;
+        // } else if (ghost.body.wasTouching.down) {
+        //     ghost.body.position.y -= 2;
+        // } else if (ghost.body.wasTouching.left) {
+        //     ghost.body.position.x += 2;
+        // }
+
+        if (randomNum === 0) {
+            randomNum = parseInt(Math.random() * (2));
+            if (randomNum === 0 ) {
+                ghost.body.velocity.x = 150;
+                ghost.body.velocity.y = 0;               
+                ghost.animations.play("right");
+                // console.log('h right', randomNum);
+                // console.log('touching', ghost.body.touching.up, ghost.body.touching.right, ghost.body.touching.down, ghost.body.touching.left)
+                return;
+
+            } else {
+                ghost.body.velocity.x = -150;
+                ghost.body.velocity.y = 0;              
+                ghost.animations.play("left");
+                // console.log('h left', randomNum);
+                // console.log('touching', ghost.body.touching.up, ghost.body.touching.right, ghost.body.touching.down, ghost.body.touching.left)
+                return;
+
+            } 
+
+        }   
+        if (randomNum === 1) {
+            randomNum = parseInt(Math.random() * (2));
+            if (randomNum === 0 ) {
+                ghost.body.velocity.y = 150;
+                ghost.body.velocity.x = 0;               
+                ghost.animations.play("down");
+                // console.log('v down', randomNum);
+                // console.log('touching', ghost.body.touching.up, ghost.body.touching.right, ghost.body.touching.down, ghost.body.touching.left)
+                return;
+
+            } else {
+                ghost.body.velocity.y = -150;
+                ghost.body.velocity.x = 0;               
+                ghost.animations.play("up");
+                // console.log('v up', randomNum);
+                // console.log('touching', ghost.body.touching.up, ghost.body.touching.right, ghost.body.touching.down, ghost.body.touching.left)
+                return;
+
+            }
+        }  
     }
+
+
+
+//************************************************************
+
+
+   // if(ghost.body.velocity.x === 0){
+   //      ghost.body.velocity.x = -150;
+   //  } else if (ghost.body.velocity.x >= 0){
+   //      ghost.body.velocity.x = 150
+   //  } else if (ghost.body.velocity.y <= 0){
+   //      ghost.body.velocity.y = -150;
+   //  } else if (ghost.body.velocity.y >= 0){
+   //      ghost.body.velocity.y = 150
+   //   } 
+   //   else {
+   //      ghost.body.velocity.x = 150;
+   //  }   
+
+    //     ghost.body.velocity.x || ghost.body.velocity.y = + 150 || - 150;
+    // }
+
+
+
+
+// if x < 0
+//   vel.x = -150
+// else if x > 0
+//   vel.x = 150
+// else if y < 0
+//   vel.y = -150
+// else if y > 0
+//   vel.y = 150
+// else (meaning he’s stopped)
+//   vel x or y = +/- 150
+
+
+
+
+
+    // else if (ghost.body.velocity.x >= 0){
+        
+    //     ghost.animations.play('up');
+    //     ghost.body.velocity.y = -150;
+    // }
     
-    if (ghost.body.velocity.x <= 0){
+    // else if (ghost.body.velocity.y <= 0){
 
-        ghost.animations.play('down');
-        ghost.body.velocity.y = 150;
+    //     ghost.animations.play('down');
+    //     ghost.body.velocity.y = 150;
 
-    }
+    // }
    
 
 
@@ -613,11 +946,29 @@ function collectStar (player, star) {
     score += 10;
     scoreText.text = 'Score: ' + score;
 
+//Final Score is 2280
+    if (score === 2280){
+        console.log("Game Over!")
+
+    gameover = game.add.sprite(220, 280, 'gameover');
+    // this.image.anchor.setTo(0.5, 0.5);
+    var scaleX = 5;
+    var scaleY = 5;    
+    gameover.scale.set(scaleX , scaleY );
+    }
+
 
 }
 
 function killPac (ghost, player) {
 
-    player.kill();
+    if (player.kill()){
+        gameover = game.add.sprite(220, 280, 'gameover');
+        // this.image.anchor.setTo(0.5, 0.5);
+        var scaleX = 5;
+        var scaleY = 5;    
+        gameover.scale.set(scaleX , scaleY );
+
+    }
 
 }
