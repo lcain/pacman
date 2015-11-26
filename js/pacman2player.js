@@ -33,6 +33,9 @@ var stars;
 var score = 0;
 var scoreText;
 
+var scoreblue = 0;
+var scoreTextBlue;
+
 function create() {
 
     //  We're going to be using physics, so enable the Arcade Physics system
@@ -324,6 +327,38 @@ function create() {
 
 
 
+// ==============================================================
+//===============================================================
+//             PLAYER TWO STUFF HERE!!!
+
+  // The player and its settings
+    player2 = game.add.sprite(792, game.world.height - 292, 'dude2');
+    player2.anchor.setTo(0.5, 0.5);
+
+    //  We need to enable physics on the player
+    game.physics.arcade.enable(player2);
+
+    //  Player physics properties. Give the little guy a slight bounce.
+    // player.body.bounce.y = 0.2;
+    // player.body.gravity.y = 300;
+    player2.body.collideWorldBounds = false;
+
+    //  Our two animations, walking left and right.
+    player2.animations.add('left', [0, 1, 2], 10, true);
+    player2.animations.add('right', [0, 1, 2], 10, true);
+    player2.animations.add('up', [0, 1, 2], 10, true);
+    player2.animations.add('down', [0, 1, 2], 10, true);
+
+
+
+
+
+// ==============================================================
+//===============================================================
+
+
+
+
 
     //********GHOSTS************************
 
@@ -426,7 +461,12 @@ function create() {
 
 
     //  The score
-    scoreText = game.add.text(816, 16, 'score: 0', { fontSize: '32px', fill: '#FFF' });
+    scoreTextYellow = game.add.text(816, 16, 'Yellow', { fontSize: '32px', fill: '#FFF' });
+    scoreText = game.add.text(816, 48, 'Score: 0', { fontSize: '32px', fill: '#FFF' });
+
+    //Player 2 Score
+    scoreTextPlayer2 = game.add.text(816, 112, 'Blue', { fontSize: '32px', fill: '#FFF' });
+    scoreTextBlue = game.add.text(816, 144, 'Score: 0', { fontSize: '32px', fill: '#FFF' });
 
     //  Our controls.
     cursors = game.input.keyboard.createCursorKeys();
@@ -492,14 +532,19 @@ function update() {
 
     //  Checks to see if the ghost overlaps with any of the stars, if he does call the collectStar function
     game.physics.arcade.overlap(ghost, player, killPac, null, this);
+    game.physics.arcade.overlap(ghost, player2, killPac, null, this);
 
 
     //  Collide the player and the stars with the platforms
     game.physics.arcade.collide(player, platforms);
     game.physics.arcade.collide(stars, platforms);
 
+    game.physics.arcade.collide(player2, platforms);
+    game.physics.arcade.collide(stars, platforms);
+
     //  Checks to see if the player overlaps with any of the stars, if he does call the collectStar function
     game.physics.arcade.overlap(player, stars, collectStar, null, this);
+    game.physics.arcade.overlap(player2, stars, collectStar2, null, this);
 
     //  Reset the players velocity (movement)
     player.body.velocity.x = 0;
@@ -569,6 +614,102 @@ function update() {
     }
     
 
+// ==============================================================
+//===============================================================
+//             PLAYER TWO STUFF HERE!!!
+
+
+//  Reset the players velocity (movement)
+    player2.body.velocity.x = 0;
+    player2.body.velocity.y = 0;
+
+
+    //Lets player swap sides of the board
+
+    if (player2.position.x < 0) {
+        player2.position.x = 795;
+    }
+
+    if (player2.position.x > 795) {
+        player2.position.x = 0;
+    }
+
+    if (player2.position.y > 593) {
+        player2.position.y = 0;
+    }
+
+    if (player2.position.y < 0) {
+        player2.position.y = 593;
+    }
+
+    //Player 2's movement binds
+
+// pauseKey = game.input.keyboard.addKey(Phaser.Keyboard.P);
+// in update, you have
+// if ( pauseKey.justPressed(/*optional duration*/) )
+// {
+//     //do stuff...
+// }
+    player2left = game.input.keyboard.addKey(Phaser.Keyboard.A);
+    player2right = game.input.keyboard.addKey(Phaser.Keyboard.D);
+    player2up = game.input.keyboard.addKey(Phaser.Keyboard.W);
+    player2down = game.input.keyboard.addKey(Phaser.Keyboard.S);
+
+
+
+
+    if (player2left.isDown)
+    {
+        //  Move to the left
+        player2.body.velocity.x = -150;
+
+        player2.animations.play('left');
+        player2.angle = 180;
+    }
+    else if (player2right.isDown)
+    {
+        //  Move to the right
+        player2.body.velocity.x = 150;
+
+        player2.animations.play('right');
+        player2.angle = 0;
+    }
+    else if (player2up.isDown)
+    {
+        //  Move up.
+        player2.body.velocity.y = -150;
+
+        player2.animations.play('up');
+        player2.angle = 270;
+    }
+    else if (player2down.isDown)
+    {
+        //  Move down
+        player2.body.velocity.y = 150;
+
+        player2.animations.play('down');
+        player2.angle = 90;
+    }
+    else
+    {
+        //  Stand still
+        player2.animations.stop();
+        player2.body.velocity.x = 0;
+        player2.body.velocity.y = 0;
+
+        player2.frame = 4;
+    }
+    
+
+
+
+
+
+
+
+
+// ==============================================================
+//===============================================================
 
     //**********GHOSTS*******************
 
@@ -1225,7 +1366,33 @@ function collectStar (player, star) {
     scoreText.text = 'Score: ' + score;
 
 //Final Score is 2280
-    if (score === 2280){
+    if ((score + scoreblue) === 2280){
+        console.log("Game Over!")
+
+    gameover = game.add.sprite(220, 280, 'gameover');
+    // this.image.anchor.setTo(0.5, 0.5);
+    var scaleX = 5;
+    var scaleY = 5;    
+    gameover.scale.set(scaleX , scaleY );
+    }
+
+
+}
+
+function collectStar2 (player, star) {
+    
+
+// var scoreblue = 0;
+// var scoreTextBlue;
+    // Removes the star from the screen
+    star.kill();
+
+    //  Add and update the score
+    scoreblue += 10;
+    scoreTextBlue.text = 'Score: ' + scoreblue;
+
+//Final Score is 2280
+    if ((scoreblue + score) === 2280){
         console.log("Game Over!")
 
     gameover = game.add.sprite(220, 280, 'gameover');
