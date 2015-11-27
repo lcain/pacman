@@ -308,7 +308,7 @@ function create() {
 
 
     // The player and its settings
-    player = game.add.sprite(14, game.world.height - 292, 'dude');
+    player = game.add.sprite(792, game.world.height - 292, 'dude');
     player.anchor.setTo(0.5, 0.5);
 
     //  We need to enable physics on the player
@@ -332,7 +332,7 @@ function create() {
 //             PLAYER TWO STUFF HERE!!!
 
   // The player and its settings
-    player2 = game.add.sprite(792, game.world.height - 292, 'dude2');
+    player2 = game.add.sprite(14, game.world.height - 292, 'dude2');
     player2.anchor.setTo(0.5, 0.5);
 
     //  We need to enable physics on the player
@@ -541,6 +541,7 @@ function update() {
 
     game.physics.arcade.collide(player2, platforms);
     game.physics.arcade.collide(stars, platforms);
+      game.physics.arcade.collide(player, player2);
 
     //  Checks to see if the player overlaps with any of the stars, if he does call the collectStar function
     game.physics.arcade.overlap(player, stars, collectStar, null, this);
