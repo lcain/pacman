@@ -5,11 +5,13 @@ function preload() {
     game.load.image('sky', 'assets/sky.png');
     game.load.image('ground', 'assets/platformblue.png');
     game.load.image('wall', 'assets/bluesquare.jpg');
+    game.load.image('wall', 'assets/bluesquare.jpg');
     // game.load.image('star', 'assets/star.png');
     game.load.image('star', 'assets/dot.png');
+    game.load.image('cherry', 'assets/cherry.png');
     game.load.image('gameover', 'assets/gameover.png')
     game.load.spritesheet('dude', 'assets/pacman.png', 32, 32);
-     game.load.spritesheet('dude2', 'assets/pacman2.png', 32, 32);
+    game.load.spritesheet('dude2', 'assets/pacman2.png', 32, 32);
     game.load.spritesheet('blueghost', 'assets/blueghost.png', 32, 32);
     game.load.spritesheet('orangeghost', 'assets/orangeghost.png', 32, 32);
     game.load.spritesheet('pinkghost', 'assets/pinkghost.png', 32, 32);
@@ -29,6 +31,7 @@ var gameover;
 var gameStarted = false;
 
 var stars;
+var cherry;
 // var dots;
 var score = 0;
 var scoreText;
@@ -352,6 +355,12 @@ function create() {
 
 // ***********************STARS**************************
 
+    //CHERRY!
+    // cherry = game.add.group();
+    // cherry.enableBody = true;
+
+    // var cherry = cherry.create(270, 280, 'cherry');
+
     //  Finally some stars to collect
     stars = game.add.group();
 
@@ -500,6 +509,7 @@ function update() {
 
     //  Checks to see if the player overlaps with any of the stars, if he does call the collectStar function
     game.physics.arcade.overlap(player, stars, collectStar, null, this);
+    // game.physics.arcade.overlap(player, cherry, collectCherry, null, this);
 
     //  Reset the players velocity (movement)
     player.body.velocity.x = 0;
@@ -1237,6 +1247,29 @@ function collectStar (player, star) {
 
 
 }
+
+// function collectCherry (player, cherry) {
+    
+//     // Removes the star from the screen
+//     cherry.kill();
+
+//     //  Add and update the score
+//     score += 50;
+//     scoreText.text = 'Score: ' + score;
+
+// //Final Score is 2280
+//     if (score === 2330){
+//         console.log("Game Over!")
+
+//     gameover = game.add.sprite(220, 280, 'gameover');
+//     // this.image.anchor.setTo(0.5, 0.5);
+//     var scaleX = 5;
+//     var scaleY = 5;    
+//     gameover.scale.set(scaleX , scaleY );
+//     }
+
+
+// }
 
 function killPac (ghost, player) {
 
